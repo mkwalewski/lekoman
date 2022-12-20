@@ -1,0 +1,5 @@
+<?php
+
+return [
+    'everyday' => 'Everyday',
+];
