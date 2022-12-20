@@ -82,7 +82,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'pl',
 
     /*
     |--------------------------------------------------------------------------
@@ -195,6 +195,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Custom Providers...
+         */
+        App\Providers\FakerServiceProvider::class,
     ],
 
     /*
@@ -210,6 +214,9 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+         'DateHelper' => App\Helpers\DateHelper::class,
+         'HttpHelper' => App\Helpers\HttpHelper::class,
+         'NumericHelper' => App\Helpers\NumericHelper::class,
     ])->toArray(),
 
 ];
