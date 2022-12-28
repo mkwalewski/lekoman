@@ -78,6 +78,7 @@ class MedicinesHistory extends Model
         $histories = DB::table('medicines_histories')
             ->select('medicines_histories.medicines_id',
                 DB::raw('DATE(time_taken) as date'),
+                DB::raw('TIME(time_taken) as time'),
                 DB::raw('SUM(medicines_histories.amount) as taken_amount'),
                 DB::raw('medicines_doses.amount - SUM(medicines_histories.amount) as left_amount'),
                 DB::raw('CEIL((medicines_doses.amount - SUM(medicines_histories.amount)) * 100 / medicines_doses.amount) as left_percent')
@@ -101,8 +102,11 @@ class MedicinesHistory extends Model
         foreach ($histories as $history) {
             $id = $history->medicines_id;
             $date = $history->date;
+            $hour = explode(':', $history->time)[0];
             $historyData[$id][$date] = [
                 'date' => $history->date,
+                'time' => $history->time,
+                'hour' => (int)$hour,
                 'dose_amount' => $data[$id]['dose_amount'],
                 'taken_amount' => $history->taken_amount,
                 'left_amount' => $history->left_amount,
@@ -118,6 +122,8 @@ class MedicinesHistory extends Model
                 } else {
                     $data[$id]['history'][] = [
                         'date' => $week,
+                        'time' => '00:00:00',
+                        'hour' => 0,
                         'dose_amount' => $data[$id]['dose_amount'],
                         'taken_amount' => 0,
                         'left_amount' => $data[$id]['dose_amount'],

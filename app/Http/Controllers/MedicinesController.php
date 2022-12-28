@@ -77,7 +77,11 @@ class MedicinesController extends Controller
         $weekData = DateHelper::getWeekData($selectedWeek, $year);
         $histories = MedicinesHistory::getHistory($weekData);
 
-        return view('pages.charts', ['histories' => $histories, 'weeks' => $weeks, 'selectedWeek' => $selectedWeek]);
+        return view('pages.charts', [
+            'histories' => $histories,
+            'weeks' => $weeks,
+            'selectedWeek' => $selectedWeek
+        ]);
     }
 
     public function doseUpdate(Request $request, $id)

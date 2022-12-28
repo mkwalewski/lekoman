@@ -38,6 +38,7 @@
                     </div>
 
                     @foreach ($histories as $id => $history)
+                        <!-- Dawki -->
                         <div class="text-center mt-5">
                             <h4 class="header-title">{{ $history['name'] }}</h4>
                             <ul class="list-inline chart-detail-list">
@@ -50,6 +51,15 @@
                             </ul>
                         </div>
                         <div id="med-chart-{{ $id }}" class="morris-chart" style="height: 300px;"></div>
+                        <!-- Godziny -->
+                        <div class="text-center mt-5">
+                            <ul class="list-inline chart-detail-list">
+                                <li class="list-inline-item">
+                                    <h5 class="font-14"><i class="fas fa-circle mr-1" style="color: #9ac9dc;"></i>{{ __('Godzina') }}</h5>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="med-chart-hours-{{ $id }}" class="morris-chart" style="height: 300px;"></div>
                     @endforeach
                 </div>
             </div>
@@ -87,6 +97,27 @@
                     resize: true, //defaulted to true
                     pointSize: 0,
                     lineColors: ['#9adcc9', '#ddd']
+                });
+                Morris.Line({
+                    element: 'med-chart-hours-{{ $id }}',
+                    data: {{ $history['name'] }},
+                    xkey: 'date',
+                    ykeys: ['time'],
+                    ymin: 0,
+                    ymax: 24,
+                    labels: ['{{ __('Godzina') }}'],
+                    smooth: false,
+                    parseTime: false,
+                    continuousLine: true,
+                    fillOpacity: ['0.9'],
+                    pointFillColors: ['#ffffff'],
+                    pointStrokeColors: ['#999999'],
+                    behaveLikeLine: true,
+                    gridLineColor: 'rgba(108, 120, 151, 0.1)',
+                    hideHover: 'auto',
+                    resize: true, //defaulted to true
+                    pointSize: 0,
+                    lineColors: ['#9ac9dc']
                 });
             @endforeach
         })( jQuery );
