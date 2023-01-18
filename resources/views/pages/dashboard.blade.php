@@ -18,12 +18,12 @@
             @foreach($doses as $dose)
                 <div class="col-xl-3 col-md-6">
                     <a href="{{ route('medicines.take') }}">
-                        <div class="card widget-user border-{{ HttpHelper::getClassForPercentage($dose->left_percent) }}">
+                        <div class="card widget-user border-{{ HttpHelper::getClassForPercentage($dose->schedule, $dose->left_percent) }}">
                             <div class="card-body text-center">
                                 <h3 class="text-primary">
                                     @if ($dose->left_percent > 0)
-                                        <span class="badge badge-pill badge-{{ HttpHelper::getClassForPercentage($dose->left_percent) }} font-18">
-                                        <i class="mdi mdi-exclamation"></i>
+                                        <span class="badge badge-pill badge-{{ HttpHelper::getClassForPercentage($dose->schedule, $dose->left_percent) }} font-18">
+                                        <i class="mdi mdi-{{ HttpHelper::getIconForSchedule($dose->schedule) }}"></i>
                                     </span>
                                     @endif
                                     {{ $dose->medicines->name }}

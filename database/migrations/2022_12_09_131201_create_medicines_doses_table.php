@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('medicines_id');
             $table->float('amount');
+            $table->float('default_unit');
             $table->string('schedule')->default('everyday');
             $table->boolean('active')->default(true);
             $table->foreign('medicines_id')->references('id')->on('medicines');

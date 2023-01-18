@@ -28,6 +28,7 @@
                         <li><a href="{{ route('medicines.dose') }}">{{ __('Dawkowanie') }}</a></li>
                         <li><a href="{{ route('medicines.take') }}">{{ __('Weź leki') }}</a></li>
                         <li><a href="{{ route('medicines.history') }}">{{ __('Historia') }}</a></li>
+                        <li><a href="{{ route('medicines.moods.history') }}">{{ __('Historia nastrojów') }}</a></li>
                         <li><a href="{{ route('medicines.charts') }}">{{ __('Wykresy') }}</a></li>
                     </ul>
                 </li>

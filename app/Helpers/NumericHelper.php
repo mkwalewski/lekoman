@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 
-use Carbon\Carbon;
-
 class NumericHelper extends Helper
 {
     public static function calcPercentage(int $number, int $total): int

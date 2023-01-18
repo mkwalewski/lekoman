@@ -36,7 +36,18 @@
                                     <div class="input-group">
                                         <input type="number" step="0.01" class="form-control" name="amount" value="{{ $medicinesDose?->amount ?? old('amount') }}" placeholder="0" required>
                                         <div class="input-group-append">
-                                            <span class="input-group-text">mg</span>
+                                            <span class="input-group-text">mg/ml</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">{{ __('Domyślna jednostka') }}</label>
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control" name="default_unit" value="{{ $medicinesDose?->default_unit ?? old('default_unit') }}" placeholder="0" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">mg/ml</span>
                                         </div>
                                     </div>
                                 </div>

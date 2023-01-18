@@ -20,7 +20,9 @@ class DateHelper extends Helper
 
     public static function getCurrentYear(): int
     {
-        return (int)date('Y');
+        $date = new Carbon('now');
+
+        return (int)$date->format('Y');
     }
 
     public static function getCurrentWeek(): int

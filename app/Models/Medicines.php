@@ -21,11 +21,13 @@ class Medicines extends Model
         return $this->hasMany(MedicinesHistory::class);
     }
 
-    public static function prepare(string $name, string $unit): Medicines
+    public static function prepare(string $name, float $package, string $unit, string $takeUnit): Medicines
     {
         $medicine = new Medicines();
         $medicine->name = $name;
+        $medicine->package = $package;
         $medicine->unit = $unit;
+        $medicine->take_unit = $takeUnit;
         $medicine->save();
 
         return $medicine;

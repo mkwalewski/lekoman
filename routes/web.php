@@ -29,6 +29,9 @@ Route::get('/medicines/dose', [App\Http\Controllers\MedicinesController::class, 
 Route::match(['get', 'post'], '/medicines/dose/update/{id}', [App\Http\Controllers\MedicinesController::class, 'doseUpdate'])->name('medicines.dose.update');
 Route::delete('/medicines/dose/delete/{id}', [App\Http\Controllers\MedicinesController::class, 'doseDelete'])->name('medicines.dose.delete');
 Route::match(['get', 'post'],'/medicines/take', [App\Http\Controllers\MedicinesController::class, 'take'])->name('medicines.take');
+Route::post('/moods', [App\Http\Controllers\MedicinesController::class, 'moods'])->name('medicines.moods');
+Route::get('/moods/history', [App\Http\Controllers\MedicinesController::class, 'moodsHistory'])->name('medicines.moods.history');
+Route::delete('/moods/history/delete/{id}', [App\Http\Controllers\MedicinesController::class, 'moodsHistoryDelete'])->name('medicines.moods.history.delete');
 Route::get('/medicines/history', [App\Http\Controllers\MedicinesController::class, 'history'])->name('medicines.history');
 Route::delete('/medicines/history/delete/{id}', [App\Http\Controllers\MedicinesController::class, 'historyDelete'])->name('medicines.history.delete');
 Route::get('/medicines/charts', [App\Http\Controllers\MedicinesController::class, 'charts'])->name('medicines.charts');

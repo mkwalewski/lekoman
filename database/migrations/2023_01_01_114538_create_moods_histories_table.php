@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('medicines', function (Blueprint $table) {
+        Schema::create('moods_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->float('package');
-            $table->string('unit')->default('mg');
-            $table->string('take_unit')->default('tab');
+            $table->unsignedBigInteger('moods_id');
+            $table->dateTime('history_time');
+            $table->foreign('moods_id')->references('id')->on('moods');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medicines');
+        Schema::dropIfExists('moods_histories');
     }
 };

@@ -6,6 +6,8 @@ use App\Helpers\DateHelper;
 use App\Models\Medicines;
 use App\Models\MedicinesDoses;
 use App\Models\MedicinesHistory;
+use App\Models\Moods;
+use App\Models\MoodsHistory;
 use Illuminate\Http\Request;
 
 class MedicinesController extends Controller
@@ -38,6 +40,7 @@ class MedicinesController extends Controller
 
     public function take(Request $request)
     {
+        $moods = Moods::all();
         $doses = MedicinesDoses::getAllActiveCalculated('now');
 
         if ($request->isMethod('post')) {
@@ -58,7 +61,10 @@ class MedicinesController extends Controller
             return redirect()->route('medicines.take');
         }
 
-        return view('pages.take', ['doses' => $doses]);
+        return view('pages.take', [
+            'doses' => $doses,
+            'moods' => $moods
+        ]);
     }
 
     public function history()
@@ -68,20 +74,52 @@ class MedicinesController extends Controller
         return view('pages.history', ['histories' => $histories]);
     }
 
+    public function moodsHistory()
+    {
+        $histories = MoodsHistory::all();
+
+        return view('pages.moods_history', ['histories' => $histories]);
+    }
+
     public function charts(Request $request)
     {
+        $moods = Moods::all();
         $year = DateHelper::getCurrentYear();
         $selectedWeek = $request->input('medicines_id') ?? DateHelper::getCurrentWeek();
         $weeksNumber = DateHelper::getNumberOfWeeksByYear($year);
         $weeks = DateHelper::getWeeksByNumber($weeksNumber, $year);
         $weekData = DateHelper::getWeekData($selectedWeek, $year);
         $histories = MedicinesHistory::getHistory($weekData);
+        $moodsHistories = MoodsHistory::getHistory($weekData);
 
         return view('pages.charts', [
+            'moods' => $moods,
             'histories' => $histories,
+            'moodsHistories' => $moodsHistories,
             'weeks' => $weeks,
             'selectedWeek' => $selectedWeek
         ]);
+    }
+
+    public function moods(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $medicinesHistoryId = MoodsHistory::tryAdd($request->input());
+
+            if (!$medicinesHistoryId) {
+                $request->session()->flash('alerts', [
+                    'danger' => __('Błąd przy zapisie samopoczucia!')
+                ]);
+            }
+
+            if ($medicinesHistoryId) {
+                $request->session()->flash('alerts', [
+                    'primary' => __('Samopoczucie zostało pomyślnie zapisne')
+                ]);
+            }
+        }
+
+        return redirect()->route('medicines.take');
     }
 
     public function doseUpdate(Request $request, $id)
@@ -150,10 +188,30 @@ class MedicinesController extends Controller
 
         if ($historyId) {
             $request->session()->flash('alerts', [
-                'primary' => __('Historia zostało pomyślnie usunięte')
+                'primary' => __('Historia została pomyślnie usunięta')
             ]);
         }
 
         return redirect()->route('medicines.history');
+    }
+
+    public function moodsHistoryDelete(Request $request, $id)
+    {
+        $id = (int)$id;
+        $historyId = MoodsHistory::tryDelete($id);
+
+        if (!$historyId) {
+            $request->session()->flash('alerts', [
+                'danger' => __('Błąd przy usuwaniu historii nastrojów!')
+            ]);
+        }
+
+        if ($historyId) {
+            $request->session()->flash('alerts', [
+                'primary' => __('Historia nastrojów została pomyślnie usunięta')
+            ]);
+        }
+
+        return redirect()->route('medicines.moods.history');
     }
 }

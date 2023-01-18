@@ -14,6 +14,7 @@ class MedicinesDoses extends Model
     use HasFactory;
 
     const SCHEDULE_EVERYDAY = 'everyday';
+    const SCHEDULE_OCCASIONALLY = 'occasionally';
     const MAX_NUMBER_OF_UNIT_TO_SHOW = 2;
 
     public $timestamps = false;
@@ -25,7 +26,7 @@ class MedicinesDoses extends Model
 
     public static function getAllSchedules(): array
     {
-        return [self::SCHEDULE_EVERYDAY];
+        return [self::SCHEDULE_EVERYDAY, self::SCHEDULE_OCCASIONALLY];
     }
 
     public static function getAllActiveCalculated(string $date): iterable
@@ -56,9 +57,11 @@ class MedicinesDoses extends Model
         foreach ($units as $unit) {
             for ($i = $unit->amount_multiplier; $i <= self::MAX_NUMBER_OF_UNIT_TO_SHOW; $i += $unit->amount_multiplier) {
                 $amount = $i * $unit->amount;
-                $options[$amount] = $amount . ' ' . $unit->medicines->unit . ' (' . $i . ' tab)';
+                $options[$amount] = $amount . ' ' . $unit->medicines->unit . ' (' . $i . ' ' . $unit->medicines->take_unit . '.)';
             }
         }
+
+        ksort($options);
 
         return $options;
     }
@@ -80,6 +83,7 @@ class MedicinesDoses extends Model
         try {
             $medicinesDose->medicines_id = $input['medicines_id'];
             $medicinesDose->amount = $input['amount'];
+            $medicinesDose->default_unit = $input['default_unit'];
             $medicinesDose->schedule = $input['schedule'];
             $medicinesDose->active = isset($input['active']) ? 1 : 0;
             $medicinesDose->save();
@@ -111,11 +115,12 @@ class MedicinesDoses extends Model
         return $id;
     }
 
-    public static function prepare(int $medicineId, float $amount, string $schedule, bool|int $active): MedicinesDoses
+    public static function prepare(int $medicineId, float $amount, float $defaultUnit, string $schedule, bool|int $active): MedicinesDoses
     {
         $medicinesDose = new MedicinesDoses();
         $medicinesDose->medicines_id = $medicineId;
         $medicinesDose->amount = $amount;
+        $medicinesDose->default_unit = $defaultUnit;
         $medicinesDose->schedule = $schedule;
         $medicinesDose->active = (int)$active;
         $medicinesDose->save();

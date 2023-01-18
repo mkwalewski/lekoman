@@ -15,7 +15,8 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Nazwa</th>
-                                    <th scope="col">Jednostka</th>
+                                    <th scope="col">Opakowanie</th>
+                                    <th scope="col">Jednostki</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -23,6 +24,13 @@
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $medicine->name }}</td>
+                                        <td>
+                                            @if ($medicine->unit == 'mg')
+                                                {{ $medicine->package }} {{ $medicine->take_unit }}
+                                            @elseif ($medicine->unit == 'ml')
+                                                {{ $medicine->package }} {{ $medicine->unit }}
+                                            @endif
+                                        </td>
                                         <td>
                                             @foreach ($medicine->units as $unit)
                                                 <span class="badge badge-pill badge-primary font-13">{{ $unit->amount }} {{ $medicine->unit }}</span>
