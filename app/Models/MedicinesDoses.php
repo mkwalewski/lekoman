@@ -42,6 +42,10 @@ class MedicinesDoses extends Model
                 }
             }
 
+            if ($leftAmount < 0) {
+                $leftAmount = 0;
+            }
+
             $dose->left_amount = $leftAmount;
             $dose->take_amount = $dose->amount - $leftAmount;
             $dose->left_percent = NumericHelper::calcPercentage($leftAmount, $dose->amount);
