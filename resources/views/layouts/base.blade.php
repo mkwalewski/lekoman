@@ -16,6 +16,9 @@
 
     <!-- Custom box css -->
     <link href="{{ asset('libs/custombox/custombox.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles -->
+    @yield('styles')
 </head>
 
 <body>

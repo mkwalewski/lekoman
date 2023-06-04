@@ -27,7 +27,7 @@ class MedicinesHistory extends Model
             $medicinesHistory = new MedicinesHistory();
             $medicinesHistory->medicines_id = $input['medicines_id'];
             $medicinesHistory->amount = $input['amount'];
-            $medicinesHistory->time_taken = Carbon::now();
+            $medicinesHistory->time_taken = $input['time'] ? Carbon::parse($input['time']) : Carbon::now();
             $medicinesHistory->save();
         } catch (\Exception $exception) {
             report($exception);

@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@section('styles')
+    <link href="{{ asset('libs/bootstrap-timepicker/bootstrap-timepicker.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
     <!-- Start Content-->
     <div class="container-fluid">
@@ -103,6 +107,15 @@
                                                                 </select>
                                                             </div>
                                                         </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">{{ __('Czas') }}</label>
+                                                            <div class="col-sm-10 input-group">
+                                                                <input type="text" class="form-control timepicker" name="time">
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text bg-danger text-white"><i class="mdi mdi-clock-outline"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <input type="hidden" name="medicines_id" value="{{ $dose->medicines->id }}" />
                                                         <button type="submit" class="btn btn-success waves-effect waves-light">
                                                             <span>{{ __('Weź') }}</span>
@@ -127,4 +140,17 @@
         <!-- end row -->
 
     </div> <!-- end container-fluid -->
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('libs/bootstrap-timepicker/bootstrap-timepicker.min.js') }}"></script>
+    <script type="text/javascript">
+        (function( $ ){
+            $('.timepicker').timepicker({
+                minuteStep: 5,
+                showMeridian: false,
+                icons: {up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down"}
+            });
+        })( jQuery );
+    </script>
 @endsection
