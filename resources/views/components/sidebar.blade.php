@@ -32,6 +32,17 @@
                         <li><a href="{{ route('medicines.charts') }}">{{ __('Wykresy') }}</a></li>
                     </ul>
                 </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="waves-effect">
+                        <i class="mdi mdi-bell-ring"></i>
+                        <span> {{ __('Notyfikacje') }} </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li><a href="{{ route('notifications.list') }}">{{ __('Lista') }}</a></li>
+                    </ul>
+                </li>
             </ul>
 
         </div>

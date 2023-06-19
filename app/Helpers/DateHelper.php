@@ -2,10 +2,13 @@
 
 namespace App\Helpers;
 
+use App\Exceptions\InvalidTimeException;
 use Carbon\Carbon;
 
 class DateHelper extends Helper
 {
+    const EMPTY_TIME = '0:00';
+
     public static function isSameDay(string $date, string $dateHistory): bool
     {
         $dateTaken = Carbon::parse($date)->startOfDay();
@@ -69,5 +72,20 @@ class DateHelper extends Helper
         }
 
         return $weekData;
+    }
+
+    public static function setDateWithTime(string $time): ?Carbon
+    {
+        if (!$time || $time == self::EMPTY_TIME) {
+            return null;
+        }
+
+        if (!preg_match('#[0-9]{0,2}:[0-9]{0,2}#ui', $time)) {
+            throw new InvalidTimeException('invalid time!');
+        }
+
+        $date = new Carbon($time);
+
+        return $date;
     }
 }

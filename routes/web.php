@@ -36,3 +36,6 @@ Route::get('/medicines/history', [App\Http\Controllers\MedicinesController::clas
 Route::delete('/medicines/history/delete/{id}', [App\Http\Controllers\MedicinesController::class, 'historyDelete'])->name('medicines.history.delete');
 Route::get('/medicines/charts', [App\Http\Controllers\MedicinesController::class, 'charts'])->name('medicines.charts');
 Route::match(['get', 'post'],'/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
+Route::get('/notifications/list', [App\Http\Controllers\NotificationsController::class, 'list'])->name('notifications.list');
+Route::match(['get', 'post'], '/notifications/update/{id}', [App\Http\Controllers\NotificationsController::class, 'update'])->name('notifications.update');
+Route::delete('/notifications/delete/{id}', [App\Http\Controllers\NotificationsController::class, 'delete'])->name('notifications.delete');
