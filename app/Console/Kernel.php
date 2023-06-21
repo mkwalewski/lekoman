@@ -16,8 +16,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('schedule:notifications:queue --force')->dailyAt(config('notification.daily_cron_time'));
-        $schedule->command('run:notifications:queue --force')->everyFifteenMinutes();
+        $schedule->command('schedule:notifications:queue')->dailyAt(config('notification.daily_cron_time'));
+        $schedule->command('run:notifications:queue')->everyMinute();
     }
 
     /**

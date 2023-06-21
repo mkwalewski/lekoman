@@ -27,14 +27,16 @@ class NotificationsQueues extends Model
 
             foreach ($notifications as $notification) {
                 $date = DateHelper::setDateWithTime($notification->start_at);
-                NotificationsQueues::prepare($notification->message, $date);
+                $message = self::prepareMessage($notification->message, $date);
+                NotificationsQueues::prepare($message, $date);
                 preg_match('#^(\d+)x$#ui', $notification->repeat_count, $matches);
 
                 if ($matches) {
                     $max = (int) $matches[1];
                     for ($i = 1; $i <= $max; $i++) {
                         $date->add($notification->repeat_every);
-                        NotificationsQueues::prepare($notification->repeated_message, $date);
+                        $message = self::prepareMessage($notification->repeated_message, $date);
+                        NotificationsQueues::prepare($message, $date);
                     }
                 }
             }
@@ -51,7 +53,7 @@ class NotificationsQueues extends Model
     {
         try {
             /** @var NotificationsQueues $queue */
-            $queues = NotificationsQueues::where('send', 0)->whereDate('send_at', '<=', Carbon::today()->toDateString())->get();
+            $queues = NotificationsQueues::where('send', 0)->where('send_at', '<=', Carbon::now()->toDateTimeString())->get();
 
             foreach ($queues as $queue) {
                 if ($telegramService->sendMessage($queue->message)) {
@@ -66,6 +68,15 @@ class NotificationsQueues extends Model
         }
 
         return  true;
+    }
+
+    private static function prepareMessage(string $message, Carbon $time): string
+    {
+        if (str_contains($message, '{{time}}')) {
+            $message = str_replace('{{time}}', $time->format('H:i'), $message);
+        }
+
+        return $message;
     }
 
     public static function prepare(string $message, \DateTime $sendAt, bool $send = false): NotificationsQueues
