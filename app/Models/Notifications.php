@@ -7,6 +7,16 @@ use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string           $schedule
+ * @property \DateTime        $start_at
+ * @property \DateTime|null   $end_at
+ * @property string           $repeat_every
+ * @property string           $repeat_count
+ * @property string           $message
+ * @property string|null      $repeated_message
+ * @property boolean          $active
+ */
 class Notifications extends Model
 {
     use HasFactory;

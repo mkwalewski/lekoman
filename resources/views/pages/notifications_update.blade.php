@@ -115,13 +115,13 @@
         (function( $ ){
             $('.time_start').timepicker({
                 minuteStep: 5,
-                defaultTime: '12:00',
+                defaultTime: '{{ Config::get('notification.default_start_at_time') }}',
                 showMeridian: false,
                 icons: {up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down"}
             });
             $('.time_end').timepicker({
                 minuteStep: 5,
-                defaultTime: '0:00',
+                defaultTime: '{{ Config::get('notification.empty_time') }}',
                 showMeridian: false,
                 icons: {up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down"}
             });

@@ -28,6 +28,7 @@
                                     <th scope="col">Licznik powótrzeń</th>
                                     <th scope="col">Wiadomość (1st)</th>
                                     <th scope="col">Wiadomość (nth)</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Akcja</th>
                                 </tr>
                             </thead>
@@ -43,6 +44,13 @@
                                         <td>{{ $notification->repeat_count }}</td>
                                         <td>{{ Str::limit($notification->message, 50) }}</td>
                                         <td>{{ Str::limit($notification->repeated_message, 50) }}</td>
+                                        <td>
+                                            @if($notification->active)
+                                                <span class="badge badge-pill badge-primary font-12">{{ __('Aktywne') }}</span>
+                                            @else
+                                                <span class="badge badge-pill badge-danger font-12">{{ __('Nieaktywne') }}</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('notifications.update', $notification->id) }}">
                                                 <button class="btn btn-success btn-xs waves-effect waves-light">
