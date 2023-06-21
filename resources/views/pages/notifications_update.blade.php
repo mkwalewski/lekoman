@@ -115,7 +115,7 @@
         (function( $ ){
             $('.time_start').timepicker({
                 minuteStep: 5,
-                defaultTime: '{{ Config::get('notification.default_start_at_time') }}',
+                defaultTime: '{{ Config::get('notification.default_start_time') }}',
                 showMeridian: false,
                 icons: {up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down"}
             });
