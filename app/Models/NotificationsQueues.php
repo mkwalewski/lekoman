@@ -26,16 +26,17 @@ class NotificationsQueues extends Model
             $notifications = Notifications::where('active', 1)->get();
 
             foreach ($notifications as $notification) {
-                $date = DateHelper::setDateWithTime($notification->start_at);
-                $message = self::prepareMessage($notification->message, $date);
-                NotificationsQueues::prepare($message, $date);
+                $dateStart = DateHelper::setDateWithTime($notification->start_at);
+                $message = self::prepareMessage($notification->message, $dateStart);
+                NotificationsQueues::prepare($message, $dateStart);
                 preg_match('#^(\d+)x$#ui', $notification->repeat_count, $matches);
 
                 if ($matches) {
+                    $date = $dateStart->copy();
                     $max = (int) $matches[1];
                     for ($i = 1; $i <= $max; $i++) {
                         $date->add($notification->repeat_every);
-                        $message = self::prepareMessage($notification->repeated_message, $date);
+                        $message = self::prepareMessage($notification->repeated_message, $dateStart);
                         NotificationsQueues::prepare($message, $date);
                     }
                 }
