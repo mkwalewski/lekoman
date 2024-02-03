@@ -8,6 +8,13 @@ else
     COMPOSER = composer
 endif
 
+ifdef cmd
+	COMMAND=$(cmd)
+endif
+
+art:
+	$(PHP) artisan $(COMMAND)
+
 info:
 	$(PHP) artisan about
 
@@ -20,10 +27,10 @@ init-test:
 	$(PHP) artisan key:generate --ansi --env=testing
 
 install:
-	$(COMPOSER) install
+	$(COMPOSER) install --no-dev
 
 install-dev:
-	$(COMPOSER) install --no-dev
+	$(COMPOSER) install
 
 build-db:
 	$(PHP) artisan migrate
