@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\NotificationsQueues;
+use App\Services\SmsApiService;
 use App\Services\TelegramService;
 use Illuminate\Console\Command;
 
@@ -27,9 +28,9 @@ class RunNotificationsQueue extends Command
      *
      * @return int
      */
-    public function handle(TelegramService $telegramService)
+    public function handle(TelegramService $telegramService, SmsApiService $smsApiService)
     {
-        if (NotificationsQueues::run($telegramService)) {
+        if (NotificationsQueues::run($telegramService, $smsApiService)) {
             $this->info('Pomyślnie wysłano notyfikacje');
 
             return Command::SUCCESS;

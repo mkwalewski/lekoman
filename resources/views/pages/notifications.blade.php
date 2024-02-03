@@ -21,6 +21,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Serwis</th>
                                     <th scope="col">Harmonogram</th>
                                     <th scope="col">Zaczyna się o</th>
                                     <th scope="col">Kończy się o</th>
@@ -37,6 +38,7 @@
                                 @foreach ($notifications as $notification)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ __('services.' . $notification->service) }}</td>
                                         <td>{{ __('schedules.' . $notification->schedule) }}</td>
                                         <td>{{ $notification->start_at }}</td>
                                         <td>{{ $notification->end_at ?? '-' }}</td>

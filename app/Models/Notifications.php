@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property string           $service
  * @property string           $schedule
  * @property \DateTime        $start_at
  * @property \DateTime|null   $end_at
@@ -22,12 +23,22 @@ class Notifications extends Model
     use HasFactory;
 
     const SCHEDULE_EVERYDAY = 'everyday';
+    const SERVICE_TELEGRAM = 'telegram';
+    const SERVICE_SMSAPI = 'smsapi';
 
     public $timestamps = false;
 
     public static function getAllSchedules(): array
     {
         return [self::SCHEDULE_EVERYDAY];
+    }
+
+    public static function getAllServices()
+    {
+        return [
+            self::SERVICE_TELEGRAM,
+            self::SERVICE_SMSAPI,
+        ];
     }
 
     public static function tryAddOrUpdate(int $id, mixed $input): int
@@ -45,6 +56,7 @@ class Notifications extends Model
         }
 
         try {
+            $notification->service = $input['service'];
             $notification->schedule = $input['schedule'];
             $notification->start_at = DateHelper::setDateWithTime($input['start_at']);
             $notification->end_at = DateHelper::setDateWithTime($input['end_at']);

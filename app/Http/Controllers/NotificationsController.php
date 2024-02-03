@@ -24,6 +24,7 @@ class NotificationsController extends Controller
         $id = (int)$id;
         $notification = Notifications::find($id);
         $schedules = Notifications::getAllSchedules();
+        $services = Notifications::getAllServices();
 
         if ($request->isMethod('post')) {
             $notificationId = Notifications::tryAddOrUpdate($id, $request->input());
@@ -42,6 +43,7 @@ class NotificationsController extends Controller
         return view('pages.notifications_update', [
             'id' => $id,
             'schedules' => $schedules,
+            'services' => $services,
             'notification' => $notification,
         ]);
     }

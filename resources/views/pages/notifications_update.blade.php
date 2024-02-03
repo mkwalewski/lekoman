@@ -23,6 +23,18 @@
                         <form class="form-horizontal" method="post">
                             @csrf
                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">{{ __('Serwis') }}</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="service">
+                                        @foreach ($services as $service)
+                                            <option value="{{ $service }}" @if($service == $notification?->service ?? old('service')) selected @endif>
+                                                {{ __('services.' . $service) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">{{ __('Harmonogram') }}</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="schedule">

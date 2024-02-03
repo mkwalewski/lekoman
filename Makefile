@@ -1,27 +1,57 @@
+ifeq ($(OS),Windows_NT)
+    # Windows stuff
+    PHP = php
+    COMPOSER = composer
+else
+    # Linux / OSX stuff
+    PHP = ea-php81
+    COMPOSER = composer
+endif
+
 info:
-	php artisan about
+	$(PHP) artisan about
 
 init:
 	cp -u .env.example .env
-	php artisan key:generate --ansi
+	$(PHP) artisan key:generate --ansi
 
 init-test:
 	cp -u .env.testing.example .env.testing
-	php artisan key:generate --ansi --env=testing
+	$(PHP) artisan key:generate --ansi --env=testing
+
+install:
+	$(COMPOSER) install
+
+install-dev:
+	$(COMPOSER) install --no-dev
 
 build-db:
-	php artisan migrate
-	php artisan add:user admin admin@example.com test123
-	php artisan import:sql
+	$(PHP) artisan migrate
+	$(PHP) artisan add:user admin admin@example.com test123
+	$(PHP) artisan import:sql
 
 build-db-test:
-	php artisan migrate --env=testing
+	$(PHP) artisan migrate --env=testing
+
+migrate:
+	$(PHP) artisan migrate
+
+migrate-test:
+	$(PHP) artisan migrate --env=testing
+
+link:
+	$(PHP) artisan storage:link
+
+cache:
+	$(PHP) artisan config:cache
+	$(PHP) artisan route:cache
+	$(PHP) artisan view:cache
 
 clear:
-	php artisan cache:clear
-	php artisan config:clear
-	php artisan route:clear
-	php artisan view:clear
+	$(PHP) artisan cache:clear
+	$(PHP) artisan config:clear
+	$(PHP) artisan route:clear
+	$(PHP) artisan view:clear
 
 test:
-	php artisan test
+	$(PHP) artisan test
