@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property string     $service
- * @property string     $message
- * @property \DateTime  $send_at
- * @property boolean    $send
+ * @property string         $service
+ * @property string         $message
+ * @property \DateTime      $send_at
+ * @property boolean        $send
+ * @property string|null    $error
  */
 class NotificationsQueues extends Model
 {
@@ -39,7 +40,9 @@ class NotificationsQueues extends Model
                     for ($i = 1; $i <= $max; $i++) {
                         $date->add($notification->repeat_every);
                         $message = self::prepareMessage($notification->repeated_message, $dateStart);
-                        NotificationsQueues::prepare($notification->service, $message, $date);
+                        if ($message) {
+                            NotificationsQueues::prepare($notification->service, $message, $date);
+                        }
                     }
                 }
             }
@@ -56,6 +59,7 @@ class NotificationsQueues extends Model
     {
         try {
             /** @var NotificationsQueues $queue */
+            $status = true;
             $queues = NotificationsQueues::where('send', 0)->where('send_at', '<=', Carbon::now()->toDateTimeString())->get();
 
             foreach ($queues as $queue) {
@@ -66,6 +70,11 @@ class NotificationsQueues extends Model
                 if ($service->sendMessage($queue->message)) {
                     $queue->send = 1;
                     $queue->save();
+                } else {
+                    $status = false;
+                    $queue->send = -1;
+                    $queue->error = $service->getError();
+                    $queue->save();
                 }
             }
         } catch (\Exception $exception) {
@@ -74,11 +83,15 @@ class NotificationsQueues extends Model
             return false;
         }
 
-        return  true;
+        return  $status;
     }
 
-    private static function prepareMessage(string $message, Carbon $time): string
+    private static function prepareMessage(?string $message, Carbon $time): string
     {
+        if ($message === null) {
+            $message = '';
+        }
+
         if (str_contains($message, '{{time}}')) {
             $message = str_replace('{{time}}', $time->format('H:i'), $message);
         }
